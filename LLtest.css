@@ -1,0 +1,29 @@
+#vertical1{
+	border-color:red;
+
+}
+#vertical2{
+	border-color:black;
+}
+
+#vertical1, #vertical2{
+	/*float:left;*/
+	height:98vh;
+	border-width:1px;
+	border-style:solid;
+}
+.scroll{
+
+}
+#InputPanel{
+	height:22vh;
+}
+#PeoplePanel{
+	height:75vh;
+	overflow-y:scroll;
+	background-color:gray;
+}
+.container-fluid{
+	padding-left:0px;
+	padding-right:0px;
+}

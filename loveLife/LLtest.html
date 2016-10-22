@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+<head>
+
+    <meta charset="utf-8">
+    
+    <title></title>
+    
+    <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    
+    <script src = "https://cdn.jsdelivr.net/lodash/4.15.0/lodash.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="loveLife.css" >
+    <link rel="stylesheet" type="text/css" href="LLtest.css" >
+</head>
+<body ng-controller="MainCTRL">
+
+  <div class="container-fluid">
+    
+    <div class="row">
+
+      <div id="vertical1" class="col col-lg-2"> 
+
+        <div class="" id="InputPanel">
+
+          <div class="panel agePanel ">   
+
+              <label>I was born in:</label>
+                
+<!--               <select class="selectpicker" ng-model="month" ng-change="updateAge()">
+                <option ng-repeat="month in calendar.months">{{month}}</option>
+              </select> -->
+
+              <select class="selectpicker" ng-model="year" ng-change="updateAge()">
+                <!-- This makes a blank for the year -->
+                <option ng-repeat="year in calendar.year" ng-model="year">{{year}}</option>
+              </select>
+
+              <label>I am {{age}} year{{pluralYear}} old.</label>
+              
+          <!-- agePanel -->
+          </div>
+
+          <div class="panel panel-body NLpanel">     
+            <!-- <input type="text" class="form-control" ng-model="age" placeholder="Enter your Age in Years"></input> -->
+            <!-- <button ng-click="makeChart()">Make Chart</button> -->
+            <label>New Lover's Name:</label>
+
+            <input type="text" class="form-control" ng-model="currentLover.name" placeholder="I Dated:"></input>
+
+            <div class="btn btn-primary" ng-click="sender()">Add Lover</div>   
+          <!-- NLpanel -->
+          </div> 
+
+        <!-- InputPanel -->
+        </div> 
+
+        <!-- lovers list -->
+        <div id="PeoplePanel">
+          <!-- iterates over each lover -->
+          <div ng-repeat="lover in lovers" class="panel panel-default personPanel">
+            
+            <!-- Who? -->
+            <div class="panel-heading">
+              <h3>I dated {{lover.name}}.</h3>
+            </div>
+
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary btn-sm" ng-click="changeCurrentModalTarget(lover.name, lovers.indexOf(lover))" data-toggle="modal" data-target="#myModal" >
+                Add Dates
+              </button>
+
+            <div class="panel-body">
+              
+              <!-- adds dates -->
+              <!-- <div class="btn btn-primary" ng-click="addDate(lovers.indexOf(lover))">Add Date</div>  -->
+              
+              <div ng-repeat="episode in lover.episodes">
+
+                <div>From:{{episode.startMo}}/{{episode.startYr}}-{{episode.endMo}}/{{episode.endYr}}
+
+                  <!-- month start dating-->
+<!--                   <select class="selectpicker" ng-model="episode.start">
+                    <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
+                  </select>  -->
+
+                  <!-- year start dating -->
+<!--                   <select class="selectpicker" >
+                    <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
+                  </select>     -->             
+                  
+                  
+
+                  <!-- month ending dating -->
+<!--                   <select class="selectpicker">
+                    <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
+                  </select>  -->
+
+
+                  <!-- year ending dating -->
+<!--                   <select class="selectpicker" >
+                    <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
+                  </select>    -->  
+
+                  <!-- removes dates -->
+                  <button ng-click="deleteDate(lover,episode)"><div class="glyphicon glyphicon-remove"></div></button>
+
+                </div>
+
+                <span ng-click="deleteDate(lover.indexOf(lover), lover[indexOf(lover)].episodes[episodes.indexOf(episode)])"></span>
+
+              </div>
+              
+              <!-- removes lover -->
+              <div class="btn btn-danger" ng-click="deleteEntry(lovers.indexOf(lover))">Remove Lover!</div>
+
+            </div>       
+          </div>
+        </div>
+
+      </div>
+      
+
+      <div id="vertical2" class="col col-lg-10" >
+      
+      </div>
+
+    </div>
+
+
+  </div>
+
+<!-- svg holder -->
+
+
+  <!-- SVG main /////////////////////////////////////-->
+  <svg class="hidden">
+    <defs>
+      <pattern id="Triangle" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path fill="black" d="M5,0 10,10 0,10 Z" />
+      </pattern>
+      <pattern id="Triangle2" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path fill="black" d="M5,0 10,10 0,10 Z" />
+          <path fill="red" d="M5,0 0,0 0,10 Z" />
+          <path fill="red" d="M5,0 10,10 10,0 Z" />
+      </pattern>
+      <pattern id="Triangle3" width="15" height="10" patternUnits="userSpaceOnUse">
+          <path fill="blue" d="M5,0 10,10 0,10 Z" />
+          <path fill="green" d="M5,0 0,0 0,10 Z" />
+          <path fill="green" d="M10,0 15,10 15,0 Z" />
+          <path fill="red" d="M5,0 10,0, 15,10, 10,10">
+      </pattern>
+      <pattern id="Triangle4" width="10" height="20" patternUnits="userSpaceOnUse">
+          <path fill="blue" d="M5,0 10,10 0,10 Z" />
+          <path fill="red" d="M5,0 0,0 0,10 Z" />
+          <path fill="red" d="M5,0 10,10 10,0 Z" />
+          <path fill="green" d="M5,20 10,10 0,10"/>
+          <path fill="black" d="M5,20 10,20 10,10"/>
+          <path fill="black" d="M5,20 0,20 0,10"/>
+      </pattern>
+      <pattern id="Stripes" width="11" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(60)">
+          <path fill="blue" d="M5,0 10,10 0,10" />
+          <path fill="red" d="M5,0 0,0 0,10" />
+          <path fill="red" d="M5,0 10,10 10,0" />
+      </pattern>
+    </defs>
+  </svg>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <!-- Person's name -->
+        <div class="modal-header">
+          {{modalObject.name}}
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+
+        <div class="modal-body">
+          
+          We dated from: 
+                    <!-- month start dating-->
+          <select class="selectpicker" ng-model="modalObject.startMo">
+            <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
+          </select> 
+
+          <!-- year start dating -->
+          <select class="selectpicker" ng-model="modalObject.startYr">
+            <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
+          </select>                 
+          
+          to
+
+          <!-- month ending dating -->
+          <select class="selectpicker" ng-model="modalObject.endMo">
+            <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
+          </select> 
+
+
+          <!-- year ending dating -->
+          <select class="selectpicker" ng-model="modalObject.endYr">
+            <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
+          </select>   
+
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" ng-click="modalAddDate(modalObject.name)" data-dismiss="modal">Save changes</button>
+
+          <button type="button" class="btn btn-secondary" ng-click="modalClear()" data-dismiss="modal">Close</button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG sample //////////////////////////////////////-->
+<!--   <svg width="120" height="120" viewBox="0 0 120 120">
+      <defs>
+          <pattern id="hash4_4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="4" height="8" transform="translate(0,0)" fill="orange"></rect>
+          </pattern>
+      </defs>
+      <circle cx="60" cy="60" r="50" fill="url(#Stripes)" />
+  </svg> -->
+
+<!--JS BEGINS  -->
+
+  <script src="LLtest.js">
+  </script>
+
+</body>
+</html>
