@@ -1,5 +1,5 @@
 #vertical1{
-	border-color:red;
+	background-color:#A8ECFF;
 
 }
 #vertical2{
@@ -9,21 +9,48 @@
 #vertical1, #vertical2{
 	/*float:left;*/
 	height:98vh;
-	border-width:1px;
-	border-style:solid;
+	/*border-width:1px;*/
+	/*border-style:solid;*/
 }
 .scroll{
 
 }
 #InputPanel{
 	height:22vh;
+	text-align: center;
 }
 #PeoplePanel{
+	margin:5px;
 	height:75vh;
 	overflow-y:scroll;
-	background-color:gray;
+	background-color: #F990A7;
+	/*background-color:#CDECF5;*/
+	border-top:3px;
+	border-style:solid;
+	border-color:#5bc0de;
+	border-radius: 5px;
 }
 .container-fluid{
 	padding-left:0px;
 	padding-right:0px;
+}
+.btn-info{
+	width:90%;
+	margin:5% 5% 0% 5%;
+}
+span.glyphicon{
+	float:right;
+}
+
+button.btn-sm{
+	width:90%;
+	margin:5% 5% 0% 5%;
+}
+.pink{
+	background-color: #F990A7;
+	border-radius: 50%;
+	height:80px;
+	width:80px;
+	border-style:none;
+	color:white;
 }
