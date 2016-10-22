@@ -231,8 +231,16 @@
 
       $scope.nameToggle = true;
       function toggleNames(){
-        $scope.nameToggle == true? $scope.nameToggle=false : $scope.nameToggle=true;
+        if($scope.nameToggle == true){
+          $(".pink").css('background-color', '#52B3CE');
+          $scope.nameToggle=false;
+        }else{
+          $(".pink").css('background-color', '#F990A7');
+          $scope.nameToggle=true;
+        }  
         makeChart();
+
+        
       }
       $scope.toggleNames = toggleNames;
 
