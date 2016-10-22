@@ -5,7 +5,14 @@
 
 	//globals
 
-    var middle = 800;
+    // var middle = 800;
+    // var width = middle;
+    // var height = middle;
+    // var radius = Math.min(width, height) /2;
+
+
+
+    var middle = $('#vertical2').height() < $('#vertical2').width()? $('#vertical2').height() : $('#vertical2').width();
     var width = middle;
     var height = middle;
     var radius = Math.min(width, height) /2;
@@ -161,9 +168,9 @@
         var targetEp = $scope.lovers[index].episodes.indexOf(y);
         $scope.lovers[index].episodes.splice(targetEp, 1);
 
-        if($scope.lovers[index].episodes.length < 1){
-        	deleteEntry(x);
-        }
+        // if($scope.lovers[index].episodes.length < 1){
+        // 	deleteEntry(x);
+        // }
         makeChart();
       }
       $scope.deleteDate = deleteDate;
@@ -222,6 +229,21 @@
       }
       $scope.modalClear = modalClear;
 
+      $scope.nameToggle = true;
+      function toggleNames(){
+        if($scope.nameToggle == true){
+          $(".pink").css('background-color', '#52B3CE');
+          $scope.nameToggle=false;
+        }else{
+          $(".pink").css('background-color', '#F990A7');
+          $scope.nameToggle=true;
+        }  
+        makeChart();
+
+        
+      }
+      $scope.toggleNames = toggleNames;
+
 //ZINTISZINTISZINTIS
 
       //this is going to sort that object array list
@@ -264,9 +286,10 @@
       function sender(){
 
       	if($scope.currentLover.name != ""){$scope.lovers.unshift({name:$scope.currentLover.name,episodes:$scope.currentLover.episodes})
-      	}else{
-      		alert("Please enter a name.");
       	}
+       //  else{
+      	// 	alert("Please enter a name.");
+      	// }
 
         console.log($scope.lovers[0]);
 
@@ -427,7 +450,7 @@
 
       loverArrayBuilder2();
       console.log(arrayx12);
-      runPie(arrayx12);
+      runPie(arrayx12, $scope.nameToggle);
       // console.log(arrayx12);
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -562,13 +585,18 @@
       }
     }
     //make svg 
+    // var svg = d3.select('#vertical2')
+    //   .append('svg')
+    //   .attr('width', width)
+    //   .attr('height', height);
+
     var svg = d3.select('#vertical2')
       .append('svg')
       .attr('width', width)
       .attr('height', height);
 
-    // D3 pie generator
-    function makePie(data, index){
+    // D3 pie generator////////////////////////////////////////////
+    function makePie(data, index, nameToggle){
 
       var pie = d3.layout.pie()
       .padAngle(.01)
@@ -616,7 +644,11 @@
         .style('fill',function(d,i){
             // console.log('fill?', d.data);
 
-          if(typeof d.data[0] == 'string'){
+          if(d.data.length > 1){
+
+            return '#a9a9a9';
+
+          }else if(typeof d.data[0] == 'string'){
 
             // if(d.data.length > 1){
             //   return colorObject.color('poly');
@@ -642,18 +674,34 @@
 
               //////////////////////////////////////////////////////////////////
               //////temporary text field to find segment generation patterns
-                    g.append("text")
-                     .attr("transform", function(d) {
-                       // console.log(arc.centroid(d));
-                            return "translate(" + arc.centroid(d) + ")";
-                        })
-                        .attr("dy", ".35em")
-                        .style("text-anchor", "middle")
-                        .text(function(d) {
-                            // console.log(d.value);
-                            return tempObject.ticker();
-                            // return d.value;
-                        });
+              if(nameToggle == true){
+
+                g.append("text")
+                 .attr("transform", function(d) {
+                   // console.log(arc.centroid(d));
+                        return "translate(" + arc.centroid(d) + ")";
+                    })
+                    .attr("dy", ".35em")
+                    // .attr("font-size", )
+                    .style("text-anchor", "middle")
+                    .text(function(d) {
+                        console.log(d.data);
+
+                        // ZZZZZZZZZZZZZZZZZZZZZZZZZZ
+                        // return tempObject.ticker();
+                        function giveNames(d){
+                          var temp = '';
+                          d.data.forEach(function(x){
+                            temp += "\n" + x;
+                          });
+                          return temp;
+                        }
+                        return giveNames(d);
+
+                        
+                        // return d.value;
+                    });
+              }
               ////////////////////////////////////////////////////////////////////////
     
     }//end of makePie()/////////////////////////////////////////
@@ -661,7 +709,7 @@
     var pieWidth = parseInt(radius / data.length);
 
     //reusable function making the circle chart
-    function runPie(data){
+    function runPie(data, nameToggle){
 
       $('g').empty();
       //run pie function
@@ -670,7 +718,7 @@
 
       for (var i = 0; i < data.length; i++) {
           // var _cData = multiLevelData[i];
-          makePie(data[i], i);
+          makePie(data[i], i, nameToggle);
       }
     }
     // runPie(data);

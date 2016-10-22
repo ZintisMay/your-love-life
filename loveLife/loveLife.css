@@ -5,7 +5,7 @@
             size:300;
         }
 
-        text{font-size:2px;}
+        text{font-size:7px;}
 
         .personPanel{
           width:95%;
@@ -16,7 +16,9 @@
         .personPanel1{
           border-color:blue;
           border-width: 3px;
-          background-color: #88c1dd;
+          
+
+          /*background-color: #88c1dd;*/
           width:250px;
           height:20vh;
           margin:0px;

@@ -24,22 +24,27 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.js" charset="utf-8"></script> -->
 
 
-    <link rel="stylesheet" type="text/css" href="loveLife.css" >
-    <link rel="stylesheet" type="text/css" href="LLtest.css" >
+    <link rel="stylesheet" type="text/css" href="./loveLife/loveLife.css" >
+    <link rel="stylesheet" type="text/css" href="./loveLife/LLtest.css" >
 </head>
 <body ng-controller="MainCTRL">
 
   <div class="container-fluid">
-    
+
+    <!-- contains both screen areas -->
     <div class="row">
 
-      <div id="vertical1" class="col col-lg-2"> 
+    <!-- first column for UI -->
+      <div id="vertical1" class="col col-lg-3"> 
 
+      <!-- age/new lover panel -->
         <div class="" id="InputPanel">
 
-          <div class="panel agePanel ">   
+        <img src="./loveLife/pinkLL.png" width="80%" style="margin:3px;"/>
 
-              <label>I was born in:</label>
+          <!-- <div class="panel agePanel ">    -->
+
+              <h4 style="margin-top:10px;">Enter your birth year to begin:</h4>
                 
 <!--               <select class="selectpicker" ng-model="month" ng-change="updateAge()">
                 <option ng-repeat="month in calendar.months">{{month}}</option>
@@ -51,82 +56,72 @@
               </select>
 
               <label>I am {{age}} year{{pluralYear}} old.</label>
+
+              <button ng-click="toggleNames()" class="pink" style="background-color:#F990A7;"><h4>Names</h4></button>
               
           <!-- agePanel -->
-          </div>
+          <!-- </div> -->
 
-          <div class="panel panel-body NLpanel">     
+          <!-- <div class="panel panel-body NLpanel">      -->
             <!-- <input type="text" class="form-control" ng-model="age" placeholder="Enter your Age in Years"></input> -->
             <!-- <button ng-click="makeChart()">Make Chart</button> -->
-            <label>New Lover's Name:</label>
+            <!-- <label>New Lover's Name:</label> -->
 
-            <input type="text" class="form-control" ng-model="currentLover.name" placeholder="I Dated:"></input>
+            <!-- <input id="addLoverField" type="text" class="form-control" ng-model="currentLover.name" placeholder="I Dated:"></input> -->
 
-            <div class="btn btn-primary" ng-click="sender()">Add Lover</div>   
+            <!-- <div id="addLoverBtn" class="btn btn-primary" ng-click="sender()">Add Lover</div>    -->
+          
           <!-- NLpanel -->
-          </div> 
+          <!-- </div>  -->
 
         <!-- InputPanel -->
         </div> 
 
+<!-- //////////////////////////////////////////// -->
+
         <!-- lovers list -->
         <div id="PeoplePanel">
           <!-- iterates over each lover -->
-          <div ng-repeat="lover in lovers" class="panel panel-default personPanel">
+          <!-- class="panel panel-default personPanel" -->
+          <div id="addLoverBtn" ng-click="sender()" class="btn btn-info" style="border-width:3px;border-style:dotted;border-color:black;">
+            <h3>Add Lover <div class="glyphicon glyphicon-plus"/></h3>
+            <input id="addLoverField" type="text" class="form-control" ng-model="currentLover.name" placeholder="I Dated:"></input>
+          </div>
+
+          <div ng-repeat="lover in lovers" >
             
             <!-- Who? -->
-            <div class="panel-heading">
-              <h3>I dated {{lover.name}}.</h3>
+            <div class="btn btn-info" type="button" data-toggle="collapse" data-target="#{{lover.name}}{{lovers.indexOf(lover)}}">
+
+              <h3>I dated {{lover.name}}<span class="glyphicon glyphicon-triangle-right"></span></h3>
+
             </div>
 
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary btn-sm" ng-click="changeCurrentModalTarget(lover.name, lovers.indexOf(lover))" data-toggle="modal" data-target="#myModal" >
-                Add Dates
-              </button>
+            <div class="collapse" id="{{lover.name}}{{lovers.indexOf(lover)}}">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-sm" ng-click="changeCurrentModalTarget(lover.name, lovers.indexOf(lover))" data-toggle="modal" data-target="#myModal" >
 
-            <div class="panel-body">
-              
-              <!-- adds dates -->
-              <!-- <div class="btn btn-primary" ng-click="addDate(lovers.indexOf(lover))">Add Date</div>  -->
-              
-              <div ng-repeat="episode in lover.episodes">
+                 <!--  <span class="glyphicon glyphicon-plus"/>  -->Add Dates <span class="glyphicon glyphicon-plus"/>
 
-                <div>From:{{episode.startMo}}/{{episode.startYr}}-{{episode.endMo}}/{{episode.endYr}}
+                </button>
+                            
+                <div ng-repeat="episode in lover.episodes">
 
-                  <!-- month start dating-->
-<!--                   <select class="selectpicker" ng-model="episode.start">
-                    <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
-                  </select>  -->
+                  <div>
 
-                  <!-- year start dating -->
-<!--                   <select class="selectpicker" >
-                    <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
-                  </select>     -->             
-                  
-                  
+                    <!-- removes dates -->
+                    <div ng-click="deleteDate(lover,episode)"><button type="button" class="btn btn-sm  btn-outline-danger">From:{{episode.startMo}}/{{episode.startYr}}-{{episode.endMo}}/{{episode.endYr}} <span class="glyphicon glyphicon-remove"/></button></div>
 
-                  <!-- month ending dating -->
-<!--                   <select class="selectpicker">
-                    <option ng-repeat="numMonths in calendar.numMonths">{{numMonths}}</option>
-                  </select>  -->
+                  </div>
 
-
-                  <!-- year ending dating -->
-<!--                   <select class="selectpicker" >
-                    <option ng-repeat="numYears in calendar.year">{{numYears}}</option>
-                  </select>    -->  
-
-                  <!-- removes dates -->
-                  <button ng-click="deleteDate(lover,episode)"><div class="glyphicon glyphicon-remove"></div></button>
+                  <span ng-click="deleteDate(lover.indexOf(lover), lover[indexOf(lover)].episodes[episodes.indexOf(episode)])"></span>
 
                 </div>
+                
+                <!-- removes lover -->
+                <button type="button" class="btn btn-danger btn-sm" ng-click="deleteEntry(lovers.indexOf(lover))">Remove Lover!</button>
 
-                <span ng-click="deleteDate(lover.indexOf(lover), lover[indexOf(lover)].episodes[episodes.indexOf(episode)])"></span>
 
-              </div>
-              
-              <!-- removes lover -->
-              <div class="btn btn-danger" ng-click="deleteEntry(lovers.indexOf(lover))">Remove Lover!</div>
 
             </div>       
           </div>
@@ -135,7 +130,7 @@
       </div>
       
 
-      <div id="vertical2" class="col col-lg-10" >
+      <div id="vertical2" class="col col-lg-9" >
       
       </div>
 
@@ -223,7 +218,7 @@
 
         <div class="modal-footer">
 
-          <button type="button" class="btn btn-primary" ng-click="modalAddDate(modalObject.name)" data-dismiss="modal">Save changes</button>
+          <button type="button" class="btn btn-primary" ng-click="modalAddDate(modalObject.name);modalClear()" data-dismiss="modal">Save changes</button>
 
           <button type="button" class="btn btn-secondary" ng-click="modalClear()" data-dismiss="modal">Close</button>
 
@@ -245,7 +240,17 @@
 
 <!--JS BEGINS  -->
 
-  <script src="LLtest.js">
+  <script src="/loveLife/LLtest.js">
+  </script>
+  <script>
+    
+    $('#addLoverField').keyup(function(event){
+      console.log(event.keyCode);
+      if(event.keyCode == 13){
+        $('#addLoverBtn').click().value("");
+      }
+    });
+
   </script>
 
 </body>

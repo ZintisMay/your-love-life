@@ -24,8 +24,7 @@ app.use(express.static(__dirname));
 
 app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname + '/loveLife/LLtest.html'));
-	console.log(__dirname);
-
+	console.log(__dirname+"/loveLife/LLtest.html");
 });
 
 // app.get('/', function(req, res){
